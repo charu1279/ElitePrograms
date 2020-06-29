@@ -1,0 +1,74 @@
+/*The program must accept an integer N as the input. The program must print the smallest possible odd integer using all the digits in N as the output. If it is not possible to form such an integer, the program must print no as the output.
+
+Boundary Condition(s):
+10 <= N <= 10^17
+
+Input Format:
+The first line contains N.
+
+Output Format:
+The first line contains the smallest possible odd integer using all the digits in N or no.
+
+Example Input/Output 1:
+Input:
+1670078423
+
+Output:
+1002346787
+
+Explanation:
+The smallest possible odd integer using all the digits in 1670078423 is 1002346787.
+
+Example Input/Output 2:
+Input:
+40068
+
+Output:
+no
+*/
+
+#include <stdio.h>
+#define ULL unsigned long long int
+int main()
+{
+    ULL n;
+    scanf("%llu",&n);
+    int a[10]={0};
+    while(n!=0){
+        a[n%10]++;
+        n=n/10;
+    }
+    int u=-1;
+    for(int i=9;i>=1;i-=2){
+        if(a[i]>0){
+            u=i;
+            a[i]--;
+            break;
+        }
+    }
+    if(u==-1){
+        printf("no");
+        return 0;
+    }
+    int s=1;
+    for(int i=1;i<=9;i++){
+        if(a[i]>0){
+            printf("%d",i);
+            a[i]--;
+            s=0;
+            break;
+        }
+    }
+    for(int i=s;i<=9;i++){
+        while(a[i]-->0){
+            printf("%d",i);
+        }
+    }
+    printf("%d",u);
+}
+
+
+
+
+
+
