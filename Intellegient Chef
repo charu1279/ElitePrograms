@@ -1,0 +1,96 @@
+/*
+There are N persons in a hotel. Each person has their own preferences for food. The hotel chef wants to prepare the food items as minimum as possible.The program must accept the food preferences of each person as the input. The program must print the minimum number of food items that must be prepared to serve everyone in the hotel.
+Note: Each person eats only one food item but has many options.
+
+Boundary Condition(s):
+1 <= N <= 10^4
+1 <= Length of the name of each food item <= 50
+
+Input Format:
+The first line contains N.
+The next N lines, each containing the string value(s) representing the preferences of food items of a person.
+
+Output Format:
+The first line contains the minimum number of food items that must be prepared to serve everyone in the hotel.
+
+Example Input/Output 1:
+Input:
+5
+Dosa Poori
+Idli Poori
+Idli Poori
+Idli Dosa
+Poori
+
+Output:
+2
+
+Explanation:
+Here N = 5 representing the 5 persons in the hotel.
+At least 2 food items (Idli & Poori) must be prepared to serve everyone in the hotel.
+
+Example Input/Output 2:
+Input:
+10
+Chapati Idli Pongal Poori Dosa
+Poori Dosa Chapati
+Idli Dosa Poori
+Pongal
+Dosa Pongal Poori Chapati
+Idli Pongal Poori
+Idli Pongal Chapati Dosa
+Dosa Chapati
+Chapati Idli Pongal Poori Dosa
+Chapati
+
+Output:
+3
+*/
+
+
+
+import java.util.*;
+class FoodItem implements Comparable<FoodItem>{
+    String name;
+    List<Integer>customers;
+    @Override
+    public int compareTo(FoodItem other){
+        return this.customers.size()-other.customers.size();
+    }
+}
+public class Hello {
+
+    public static void main(String[] args) {
+	    Scanner sc= new Sanner(System.in);
+	    int n=sc.nextInt();sc.nextLine();
+	    Map<String,FoodItem>foodItemMap=new HashMap<>();
+	    List<Integer>rem=new ArrayList<>();
+	    for(int customer=1;customer<=n;customer++){
+	        rem.add(customer);
+	        String preference[]=sc.nextLine().split("\\s+");
+	        for(String item:preference){
+	            if(!foodItemMap.containsKey(item)){
+	                FoodItem fi=new FoodItem();
+	                fi.name=item;
+	                fi.customers=new ArrayList<>();
+	                foodItemMap.put(item,fi);
+	            }
+	            foodItemMap.get(item).customers.add(customer);
+	        }
+	    }
+	    int c=0;
+	    while(!rem.isEmpty()){
+	        List<FoodItem>items=new ArrayList<>(foodItemMap.values());
+	        Collections.sort(items,Collections.reverseOrder());
+	        FoodItem mp=items.get(0);
+	        c++;
+	        foodItemMap.remove(mp.name);
+	        rem.removeAll(mp.customers);
+	        for(String foodItem:foodItemMap.keySet()){
+	            foodItemMap.get(foodItem).customers.removeAll(mp.customers);
+	        }
+	    }
+    }
+	System.out.println(c);
+}
+
