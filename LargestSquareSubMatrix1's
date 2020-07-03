@@ -1,0 +1,95 @@
+/*The program must accept an integer matrix of size RxC containing only 0s and 1s as the input. The program must print the size of the largest square sub matrix containing all the elements as 1 in the given matrix.
+Note: There is always at least one square sub matrix containing all the elements as 1 in the given matrix.
+
+Boundary Condition(s):
+2 <= R, C <= 1000
+
+Input Format:
+The first line contains R and C separated by a space.
+The next R lines, each containing C integers separated by a space.
+
+Output Format:
+The lines containing the largest square sub matrix containing all the elements as 1 in the given matrix.
+
+Example Input/Output 1:
+Input:
+7 5
+1 1 1 0 1
+1 1 0 1 0
+0 1 1 1 1
+1 1 1 1 1
+1 1 1 1 1
+1 1 1 1 1
+0 0 0 0 0
+
+Output:
+4
+
+Explanation:
+In the given 7x5 matrix, the largest square sub matrix with 1s is highlighted below.
+1 1 1 0 1
+1 1 0 1 0
+0 1 1 1 1
+1 1 1 1 1
+1 1 1 1 1
+1 1 1 1 1
+0 0 0 0 0
+The size of the largest square sub matrix is 4.
+Hence the output is 4
+
+Example Input/Output 2:
+Input:
+7 6
+1 1 0 1 1 1
+1 1 0 1 1 1
+0 0 0 1 1 1
+0 0 0 0 0 0
+0 0 0 0 0 0
+1 1 0 0 1 1
+1 1 0 0 1 1
+
+Output:
+3
+
+*/
+
+#include <stdio.h>
+
+int min(int x,int y){
+    return x<y?x:y;
+}
+int main()
+{
+    int r,c;
+    scanf("%d %d",&r,&c);
+    int m[r][c],max[r][c];
+    int maxsize=0;
+    for(int row=0;row<r;row++){
+        for(int col=0;col<c;col++){
+            scanf("%d",&m[row][col]);
+            if(row==0 || col==0){
+                max[row][col]=m[row][col];
+            }
+            if(m[row][col]==1){
+                maxsize=1;
+            }
+        }
+    }
+    for(int row=1;row<r;row++){
+        for(int col=1;col<c;col++){
+            if(m[row][col]==0){
+                max[row][col]=0;
+                continue;
+            }
+            int left=max[row][col-1];
+            int top=max[row-1][col];
+            int topleft=max[row-1][col-1];
+            max[row][col]=min(left,min(top,topleft))+1;
+            if(max[row][col]>maxsize){
+                maxsize=max[row][col];
+            }
+            
+        }
+    }
+    printf("%d",maxsize);
+}
