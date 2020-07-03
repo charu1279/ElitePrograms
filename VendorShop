@@ -1,0 +1,94 @@
+/*A vendor has a shop and he wants to purchase some items for a maximum of N rupees. There are K items in a wholesale store that the vendor is going to buy. Each item has the cost price and profit that the seller can sell. The vendor can buy multiple items but not the same type. The program must accept the value of N and the cost price and profit of the K items as the input. The program must print the maximum profit that the vendor can earn by buying and selling the items as the output.
+
+Boundary Condition(s):
+1 <= N <= 1000
+1 <= K <= 100
+1 <= Cost price and profit of each item <= 1000
+
+Input Format:
+The first line contains N and K separated by a space.
+The next K lines, each containing two integers representing the cost price and profit of an item.
+
+Output Format:
+The first line contains the maximum profit that the vendor can earn by buying and selling the items as per the given conditions.
+
+Example Input/Output 1:
+Input:
+10 6
+5 2
+6 4
+3 2
+4 3
+1 2
+15 20
+
+Output:
+8
+
+Explanation:
+Here N = 10 and K = 6.
+The maximum profit that the vendor can earn by buying and selling the following 3 items is 8.
+6 4
+1 2
+3 2
+
+Example Input/Output 2:
+Input:
+20 6
+5 2
+6 4
+3 2
+4 3
+1 2
+15 20
+
+Output:
+25
+*/
+
+import java.util.*;
+class Item implements Comparable<Item>{
+    int cp,p;
+    @Override
+    public int compareTo(Item other){
+        return this.cp-other.cp;
+    }
+}
+public class Hello {
+
+    public static void main(String[] args) {
+		//Your Code Here
+		Scanner sc=new Scanner(System.in);
+		    int n=sc.nextInt(),k=sc.nextInt();
+		    List<Item>items=new ArrayList<>();
+		    items.add(new Item());
+		    for(int ctr=1;ctr<=k;ctr++){
+		        Item item=new Item();
+		        item.cp=sc.nextInt();
+		        item.p=sc.nextInt();
+		        items.add(item);
+		    }
+		    Collections.sort(items);
+		    int m[][]=new int[k+1][n+1];
+		    for(int item=1;item<=k;item++){
+		        Item currItem=items.get(item);
+		        if(currItem.cp>n){
+		            System.out.println(m[item-1][n]);
+		            return 0;
+		        }
+		        for(int amt=1;amt<=n;amt++){
+		            if(amt<currItem.cp){
+		                m[item][amt]=m[item-1][amt];
+		            }
+		            else{
+		                int incProfit=currItem.p+m[item-1][amt-currItem.cp];
+		                int excProfit=m[item-1][amt];
+		                m[item][amt]=Math.max(incProfit,excProfit);
+		            }
+		        }
+		    }
+		    System.out.println(m[k][n])
+		
+
+	}
+}
