@@ -1,0 +1,76 @@
+/*The program must accept a text and a wildcard pattern as the input. The program must print "Matching" if the wildcard is matched with text. Else the program must print "Not matching" as the output.
+
+The wildcard pattern can include the characters '?' and '*'
+'?' – Matches any single character
+'*' – Matches any sequence of characters (including the empty sequence)
+
+Boundary Condition(s):
+1 <= Length of text <= 100
+1 <= Length of wildcard pattern <= 50
+
+Input Format:
+The first line contains the text.
+The second line contains the wildcard pattern.
+
+Output Format:
+The first line contains either "Matching" or "Not matching".
+
+Example Input/Output 1:
+Input:
+abbbbbbbbccbbbbbed
+a*b?d
+
+Output:
+Matching
+
+Explanation:
+The wildcard pattern is "a*b?d".
+'*' can be replaced by "bbbbbbbbccbbbb".
+'?' can be replaced by "e".
+Hence the output is Matching
+
+Example Input/Output 2:
+Input:
+abbbbbbbbccbhd
+a*b??b?d
+
+Output:
+Matching
+
+Example Input/Output 3:
+Input:
+abbbbbbbbccbhd
+*c??b?d
+
+Output:
+Not matching
+*/
+
+import java.util.*;
+public class Hello {
+
+    public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		String text=sc.nextLine();
+		String pattern=sc.nextLine();
+		int r=text.length(),c=pattern.length();
+		boolean m[][]=new boolean[r+1][c+1];
+		m[0][0]=true;
+		if(pattern.charAt(0)=='*'){
+		    m[0][1]=true;
+		}
+		for(int row=1;row<=r;row++){
+		    for(int col=1;col<=c;col++){
+		        if(pattern.charAt(col-1)=='?'||pattern.charAt(col-1)==text.charAt(row-1)){
+		            m[row][col]=m[row-1][col-1];
+		        }
+		        else if(pattern.charAt(col-1)=='*'){
+		            m[row][col]=m[row-1][col]||m[row][col-1];
+		            
+		        }
+		    }
+		}
+		System.out.println(m[r][c]?"matching":"Not matching");
+
+	}
+}
